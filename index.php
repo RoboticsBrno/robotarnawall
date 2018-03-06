@@ -31,6 +31,11 @@ function fmt($text) {
   return $text;
 }
 
+function format_anchor($title) {
+    $res = str_replace(" ", "", $title);
+    $res = filter_var($res, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    return $res;
+}
 ?>
 <html>
 <head>
@@ -97,9 +102,9 @@ function fmt($text) {
       $res = $db->query("SELECT id, text, title FROM messages ORDER BY id DESC;");
       while($row = $res->fetchArray()) {
     ?>
-    <div class="uk-card uk-card-default uk-card-body uk-width-1-1 uk-margin">
+    <div class="uk-card uk-card-default uk-card-body uk-width-1-1 uk-margin" id="<?php echo format_anchor($row['title']); ?>">
       <div class="uk-inline uk-width-1-1">
-        <h3 class="uk-card-title"><?php echo $row["title"]; ?></h3>
+        <h3 class="uk-card-title"><a class="uk-link-text" href="#<?php echo format_anchor($row['title']); ?>"><?php echo $row["title"]; ?></a></h3>
         <div class="uk-position-right">
           <a href="add.php?id=<?php echo $row["id"]; ?>" uk-icon="icon: pencil"></a>
           <a href="javascript:void(0);" onclick="deleteMsg(<?php echo $row["id"]; ?>);" uk-icon="icon: trash"></a>
