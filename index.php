@@ -2,7 +2,7 @@
 
 function regexp_replace($regexp, $text, $callback) {
   preg_match_all($regexp, $text, $matches, PREG_OFFSET_CAPTURE);
-  
+
   $newstr = "";
   $lastidx = 0;
   foreach($matches[0] as $m) {
@@ -15,15 +15,18 @@ function regexp_replace($regexp, $text, $callback) {
 }
 
 function fmt($text) {
+  $text = regexp_replace('/\n/', $text, function($m) { return "<br>"; });
+
   $text = regexp_replace(
-    '/((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z0-9\&\.\/\?\:@\-_=#])*/',
+    '/((http|https)\:\/\/)[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z0-9\&\.\/\?\:@\-_=#%])*/',
     $text,
     function($m) {return sprintf("<a href=\"%s\">%s</a>", $m[0], $m[0]); });
-  
-  $text = regexp_replace('/\*.*\*/U', $text, 
-    function($m) { return sprintf("<b>%s</b>", substr($m[0], 1, strlen($m[0])-2)); });
-  
-  $text = regexp_replace('/\n/', $text, function($m) { return "<br>"; });
+
+  $text = regexp_replace('/\[code\].*\[\/code\]/U', $text,
+    function($m) {
+      return sprintf("<pre><code>%s</code></pre>",
+        str_replace("<br>", "\n", substr($m[0], 6, strlen($m[0])-13)));
+    });
 
   return $text;
 }
