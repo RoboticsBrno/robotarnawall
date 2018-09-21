@@ -15,20 +15,25 @@ function regexp_replace($regexp, $text, $callback) {
 }
 
 function fmt($text) {
-  $text = regexp_replace('/\n/', $text, function($m) { return "<br>"; });
+  $tokens = preg_split('/\[\/?raw\]/', $text);
+  $res = "";
+  foreach($tokens as $i=>$tok) {
+    if($i%2 == 0) {
+      $tok = regexp_replace('/\n/', $tok, function($m) { return "<br>"; });
+      $tok = regexp_replace(
+        '/((http|https)\:\/\/)[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z0-9\&\.\/\?\:@\-_=#%])*/',
+        $tok,
+        function($m) {return sprintf("<a href=\"%s\">%s</a>", $m[0], $m[0]); });
 
-  $text = regexp_replace(
-    '/((http|https)\:\/\/)[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z0-9\&\.\/\?\:@\-_=#%])*/',
-    $text,
-    function($m) {return sprintf("<a href=\"%s\">%s</a>", $m[0], $m[0]); });
-
-  $text = regexp_replace('/\[code\].*\[\/code\]/U', $text,
-    function($m) {
-      return sprintf("<pre><code>%s</code></pre>",
+      $tok = regexp_replace('/\[code\].*\[\/code\]/U', $tok,
+        function($m) {
+          return sprintf("<pre><code>%s</code></pre>",
         str_replace("<br>", "\n", substr($m[0], 6, strlen($m[0])-13)));
-    });
-
-  return $text;
+        });
+    }
+    $res .= $tok;
+  }
+  return $res;
 }
 
 function format_anchor($title) {
