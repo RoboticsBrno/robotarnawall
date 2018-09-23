@@ -1,8 +1,10 @@
 <?php
+
+$cfg = require('config.php');
+
 function check_pass($pass) {
-  $hash = hash("sha256", "solnicka1984!" . $pass);
-  return $hash === "5ae054f4c55ab800ee68a791a238ccbb169e470264da6ab9d4497ef94e91ebe7" ||
-    $hash === "156119b3f0f348f059cf0d27e887d51be4f861592f2efda3611ddee6e2c6df50";
+  $hash = hash("sha256", $GLOBALS["cfg"]["pass_salt"] . $pass);
+  return in_array($hash, $GLOBALS["cfg"]["pass_sha256"], true);
 }
 
 $dbname = "data.sqlite";
@@ -33,7 +35,7 @@ if(isset($_GET["delete"]) && isset($_GET["pass"]) && isset($_GET["id"]) && is_nu
       $stmt = $db->prepare("UPDATE messages SET text=?, title=? WHERE id=?;");
       $stmt->bindValue(1, $text);
       $stmt->bindValue(2, $title);
-      $stmt->bindValue(3, $_POST["id"]);   
+      $stmt->bindValue(3, $_POST["id"]);
     } else {
       $stmt = $db->prepare("INSERT INTO messages (title, text) VALUES (?, ?);");
       $stmt->bindValue(1, $title);
@@ -42,7 +44,7 @@ if(isset($_GET["delete"]) && isset($_GET["pass"]) && isset($_GET["id"]) && is_nu
     $stmt->execute();
     $stmt->close();
     $db->close();
-    
+
     header('Location: index.php', true, 301);
     die();
   } else {
@@ -66,7 +68,7 @@ if(isset($_GET["delete"]) && isset($_GET["pass"]) && isset($_GET["id"]) && is_nu
 ?>
 <html>
 <head>
-  <title>RobotikaWall</title>
+  <title><?php echo $cfg["title"]; ?></title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/css/uikit.min.css" />
 
   <!-- jQuery is required -->
@@ -89,7 +91,7 @@ if(isset($_GET["delete"]) && isset($_GET["pass"]) && isset($_GET["id"]) && is_nu
 </head>
 <body class="muter" uk-height-viewport>
   <div class="uk-section uk-section-primary uk-padding-small" uk-grid>
-    <a href="index.php"><h2 class="uk-margin-left">RobotárnaWall</h2></a>
+    <a href="index.php"><h2 class="uk-margin-left"><?php echo $cfg["title"]; ?></h2></a>
     <div class="uk-width-expand"></div>
     <a class="uk-button uk-button-default" href="add.php">Add message</a>
   </div>

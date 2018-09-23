@@ -1,5 +1,7 @@
 <?php
 
+$cfg = require('config.php');
+
 function regexp_replace($regexp, $text, $callback) {
   preg_match_all($regexp, $text, $matches, PREG_OFFSET_CAPTURE);
 
@@ -20,11 +22,10 @@ function fmt($text) {
   foreach($tokens as $i=>$tok) {
     if($i%2 == 0) {
       $tok = nl2br($tok, false);
-
-      $tok = regexp_replace('/\[code\].*\[\/code\]/U', $tok,
+      $tok = regexp_replace('/\[code\].*\[\/code\]/msU', $tok,
         function($m) {
           return sprintf("<pre><code>%s</code></pre>",
-          htmlspecialchars(str_replace("<br>", "\n", substr($m[0], 6, strlen($m[0])-13))));
+          htmlspecialchars(str_replace("<br>", "", substr($m[0], 6, strlen($m[0])-13))));
         });
 
       $tok = regexp_replace(
@@ -45,7 +46,7 @@ function format_anchor($title) {
 ?>
 <html>
 <head>
-  <title>RobotikaWall</title>
+  <title><?php echo $cfg["title"]; ?></title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/css/uikit.min.css" />
 
   <!-- jQuery is required -->
@@ -97,7 +98,7 @@ function format_anchor($title) {
 </head>
 <body class="muter" uk-height-viewport>
   <div class="uk-section uk-section-primary uk-padding-small" uk-grid>
-    <a href="index.php"><h2 class="uk-margin-left">RobotárnaWall</h2></a>
+    <a href="index.php"><h2 class="uk-margin-left"><?php echo $cfg["title"]; ?></h2></a>
     <div class="uk-width-expand"></div>
     <a class="uk-button uk-button-default" href="add.php">Add message</a>
   </div>

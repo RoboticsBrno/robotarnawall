@@ -1,0 +1,12 @@
+<?php
+
+return array(
+    'title' => 'RobotikaWall',
+    'pass_salt' => "solnicka1984!",
+    'pass_sha256' => array(
+        "5ae054f4c55ab800ee68a791a238ccbb169e470264da6ab9d4497ef94e91ebe7",
+        "156119b3f0f348f059cf0d27e887d51be4f861592f2efda3611ddee6e2c6df50",
+    ),
+);
+
+?>
