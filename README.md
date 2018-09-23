@@ -38,3 +38,13 @@ To put on the wall HTML elements and code which you want to process on the user 
 <div style="position:relative;height:0;padding-bottom:81.97%;overflow:hidden;"><iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" src="https://makecode.microbit.org/---run?id=_KvzMqyayA7cb" allowfullscreen="allowfullscreen" sandbox="allow-popups allow-forms allow-scripts allow-same-origin" frameborder="0"></iframe></div>
 [/raw]
 ```
+
+## Screenshots
+Wall with `raw` tag example
+![Wall with raw tag example](./media/wall_raw_tag_example.png)
+
+Wall with `code` tag example
+![Wall with code tag example](./media/wall_code_tag_example.png)
+
+Wall with text
+![Wall with text](./media/wall_text_example.png)
