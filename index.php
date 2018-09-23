@@ -19,17 +19,18 @@ function fmt($text) {
   $res = "";
   foreach($tokens as $i=>$tok) {
     if($i%2 == 0) {
-      $tok = regexp_replace('/\n/', $tok, function($m) { return "<br>"; });
-      $tok = regexp_replace(
-        '/((http|https)\:\/\/)[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z0-9\&\.\/\?\:@\-_=#%])*/',
-        $tok,
-        function($m) {return sprintf("<a href=\"%s\">%s</a>", $m[0], $m[0]); });
+      $tok = nl2br($tok, false);
 
       $tok = regexp_replace('/\[code\].*\[\/code\]/U', $tok,
         function($m) {
           return sprintf("<pre><code>%s</code></pre>",
-        str_replace("<br>", "\n", substr($m[0], 6, strlen($m[0])-13)));
+          htmlspecialchars(str_replace("<br>", "\n", substr($m[0], 6, strlen($m[0])-13))));
         });
+
+      $tok = regexp_replace(
+        '/((http|https)\:\/\/)[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z0-9\&\.\/\?\:@\-_=#%])*/',
+        $tok,
+        function($m) {return sprintf("<a href=\"%s\">%s</a>", $m[0], $m[0]); });
     }
     $res .= $tok;
   }
