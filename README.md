@@ -1,6 +1,16 @@
 # robotarnawall
 Simple PHP web page for quick sharing information during lecture or event.
 
+The files with suffix `.dist` (`config.php.dist`, `data.sqlite.dist`) are specific for each instance of wall. You must **delete** the suffix `.dist` for correct working.
+
+## config.php.dist
+
+In this file you can set the wall name and passwords for editing the content on the wall.
+
+## data.sqlite.dist
+
+Empty database.
+
 ## Available tags
 
 ### Tag [code]
