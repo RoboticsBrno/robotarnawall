@@ -24,7 +24,7 @@ function fmt($text) {
       $tok = nl2br($tok, false);
       $tok = regexp_replace('/\[code\].*\[\/code\]/msU', $tok,
         function($m) {
-          return sprintf("<pre><code>%s</code></pre>",
+          return sprintf("<pre class=\"prettyprint\"><code>%s</code></pre>",
           htmlspecialchars(str_replace("<br>", "", substr($m[0], 6, strlen($m[0])-13))));
         });
 
@@ -55,6 +55,7 @@ function format_anchor($title) {
   <!-- UIkit JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.25/js/uikit-icons.min.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 
   <meta name="viewport" content="width=dev ice-width, initial-scale=1">
   <meta charset="UTF-8">
@@ -65,6 +66,9 @@ function format_anchor($title) {
     }
     .muter {
       background-color: #e8e8e8;
+    }
+    pre.prettyprint {
+      padding: 5px;
     }
   </style>
 
